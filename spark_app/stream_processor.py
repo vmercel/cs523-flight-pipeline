@@ -229,6 +229,7 @@ def main():
                     .option("subscribe", TOPIC)
                     .option("startingOffsets", "latest")
                     .option("failOnDataLoss", "false")
+                    .option("maxOffsetsPerTrigger", 5000)  # cap batch size
                     .load())
 
     # Parse JSON payload

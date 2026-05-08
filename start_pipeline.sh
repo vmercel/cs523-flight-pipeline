@@ -13,7 +13,14 @@ pip install kafka-python requests python-dotenv happybase --break-system-package
 echo "  Done."
 
 echo "=== [1/6] Starting HBase ==="
-start-hbase.sh 2>&1 | grep -E 'running|starting'
+# Always clear stale /hbase ZooKeeper node — prevents 'Master is initializing' hangs
+# after container recreates (stale ephemeral nodes from the previous run)
+stop-hbase.sh 2>&1 | tail -1 || true
+sleep 3
+echo "  Clearing stale /hbase ZooKeeper node..."
+echo 'rmr /hbase' | hbase zkcli 2>&1 | grep -E 'CONNECTED|rmr' || true
+sleep 2
+start-hbase.sh 2>&1 | grep -E 'running|starting' || true
 
 echo "  Waiting for HBase Master to initialize..."
 for i in $(seq 1 30); do
@@ -63,7 +70,8 @@ sleep 2
 PYTHONUNBUFFERED=1 HBASE_HOST=localhost KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BROKER} \
   nohup spark-submit \
     --master local[2] \
-    --driver-memory 1g \
+    --driver-memory 2g \
+    --conf spark.driver.maxResultSize=512m \
     --conf spark.sql.shuffle.partitions=2 \
     --conf spark.streaming.backpressure.enabled=true \
     --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 \
