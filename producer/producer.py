@@ -17,7 +17,7 @@ load_dotenv()
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
+KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "172.18.0.4:9092")
 TOPIC = "flights-raw"
 POLL_INTERVAL = 10  # seconds — matches OpenSky anonymous rate limit
 

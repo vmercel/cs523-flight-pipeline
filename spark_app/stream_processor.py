@@ -36,7 +36,7 @@ from pyspark.sql.types import (
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
-KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka-server:9092")
+KAFKA_BOOTSTRAP = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "172.18.0.4:9092")
 TOPIC = "flights-raw"
 HBASE_HOST = os.getenv("HBASE_HOST", "localhost")
 HDFS_AIRCRAFT_CSV = "hdfs:///user/static/aircraft.csv"
