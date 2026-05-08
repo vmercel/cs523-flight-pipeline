@@ -30,6 +30,37 @@ cd ~/Documents/MIU/cs523-bdt && docker-compose down -v
 
 ---
 
+## Dashboard Screenshots
+
+### Tab 1 — Global Traffic Map
+Live world map of 10,000+ airborne flights colour-coded by altitude, with altitude and speed distribution histograms.
+
+![Global Traffic Map](docs/screenshots/01.png)
+
+### Tab 2 — Traffic Analytics (country rankings & bubble chart)
+Top countries by flight count (bar) and average altitude vs velocity bubble chart sized by traffic volume.
+
+![Traffic Analytics — Rankings](docs/screenshots/02.png)
+
+### Tab 2 — Traffic Analytics (sliding-window time series & choropleth)
+5-minute sliding-window trend lines (flight count and average altitude per country) and a global choropleth heatmap of flight density.
+
+![Traffic Analytics — Time Series & Heatmap](docs/screenshots/03.png)
+
+### Tab 3 — Fleet Intelligence
+Top 15 airlines, top aircraft models, manufacturer share donut, ICAO type-code bar chart, and altitude-vs-velocity scatter by operator.
+
+![Fleet Intelligence](docs/screenshots/04.png)
+
+![Fleet Intelligence — Altitude vs Velocity scatter](docs/screenshots/05.png)
+
+### Tab 4 — Anomaly Centre
+Rapid-descent detection (vertical rate < −15 m/s): worst-descent gauge, descent-rate histogram with threshold marker, alerts by country, and full alert event log with severity, ft/min and altitude columns.
+
+![Anomaly Centre](docs/screenshots/06.png)
+
+---
+
 ## Architecture
 
 ```
