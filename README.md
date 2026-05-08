@@ -2,7 +2,31 @@
 
 **Authors:** Alvin Leonald Kabwama · Mercel Vubangsi
 **Course:** CS523 Big Data Technology — Maharishi International University
-**Stack:** OpenSky API → Apache Kafka → PySpark Structured Streaming (YARN) → HBase → Streamlit
+**Stack:** OpenSky API → Apache Kafka → PySpark Structured Streaming → HBase → Streamlit
+
+---
+
+## Quick Start (One Command)
+
+### Start the full pipeline
+```bash
+# 1. Bring up Docker containers (from the cs523-bdt folder)
+cd ~/Documents/MIU/cs523-bdt && docker-compose up -d
+
+# 2. Start everything inside the container (HBase, Thrift, tables, producer, Spark, dashboard)
+docker exec cs523bdt-lab bash /opt/my_code/cs523-flight-pipeline/start_pipeline.sh
+```
+
+Open **http://localhost:8501** in your browser.
+
+### Stop the full pipeline
+```bash
+# Graceful stop — keeps all HBase and Kafka data (volumes preserved)
+cd ~/Documents/MIU/cs523-bdt && docker-compose stop
+
+# Full teardown — wipes all data volumes
+cd ~/Documents/MIU/cs523-bdt && docker-compose down -v
+```
 
 ---
 
