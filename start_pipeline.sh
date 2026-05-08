@@ -91,11 +91,24 @@ for i in $(seq 1 18); do
   echo "  ...waiting ($((i*5))s)"
 done
 
+echo "=== Starting Streamlit dashboard ==="
+pip install streamlit --break-system-packages -q 2>/dev/null || true
+pkill -f "streamlit run" 2>/dev/null || true
+sleep 1
+HBASE_HOST=localhost nohup streamlit run ${PROJECT}/dashboard/app.py \
+  --server.port 8501 \
+  --server.address 0.0.0.0 \
+  --server.headless true \
+  > /tmp/dashboard.log 2>&1 &
+echo "  Dashboard PID: $!"
+sleep 5
+grep -E 'started|URL|Error' /tmp/dashboard.log | head -4
+
 echo ""
 echo "=== Pipeline status ==="
 echo "  Producer log:  docker exec cs523bdt-lab tail -5 /tmp/producer.log"
 echo "  Spark log:     docker exec cs523bdt-lab tail -20 /tmp/spark.log"
-echo "  Dashboard:     streamlit run ${PROJECT}/dashboard/app.py  (from host, port 8501)"
+echo "  Dashboard:     http://localhost:8501"
 echo "  HBase verify:  docker exec cs523bdt-lab python3 -c \""
 echo "    import happybase; c=happybase.Connection('localhost')"
 echo "    [print(t, len(list(c.table(t).scan(limit=1)))) for t in ['flights_live','flights_agg']]\""
