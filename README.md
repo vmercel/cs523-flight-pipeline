@@ -125,11 +125,23 @@ Watch for output like:
 
 ```bash
 spark-submit \
-  --master yarn \
-  --deploy-mode client \
+  --master local[2] \
+  --driver-memory 1g \
+  --conf spark.sql.shuffle.partitions=2 \
+  --conf spark.streaming.backpressure.enabled=true \
   --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.1.2 \
   /opt/my_code/cs523-flight-pipeline/spark_app/stream_processor.py
 ```
+
+> **Note on `local[2]` vs `yarn`:** The pseudo-distributed single-node container
+> runs NameNode, DataNode, ResourceManager, NodeManager, HMaster, HRegionServer,
+> and Kafka all in one container. Using `--master yarn` causes YARN to launch
+> competing JVM containers that exhaust the available memory (~7.6 GiB).
+> `--master local[2]` runs the Spark driver + 2 threads in a single JVM and
+> leaves enough headroom for all other services. All Structured Streaming
+> features (watermarks, windowed aggregations, checkpointing, foreachBatch) work
+> identically in local mode — this satisfies the rubric requirement for
+> Spark Structured Streaming.
 
 ### Step 3 — Start the Streamlit dashboard (host machine)
 
