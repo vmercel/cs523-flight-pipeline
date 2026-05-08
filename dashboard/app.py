@@ -408,10 +408,9 @@ with tab1:
                 hoverinfo="text",
             ))
             fig_map.update_layout(
-                **PLOTLY_BASE,
+                **{**PLOTLY_BASE, "margin": dict(l=0, r=0, t=0, b=0)},
                 height=520,
                 geo=GEO_BASE,
-                margin=dict(l=0, r=0, t=0, b=0),
             )
             st.plotly_chart(fig_map, use_container_width=True)
 
@@ -570,10 +569,9 @@ with tab2:
         )
         fig_choropleth.update_geos(**GEO_BASE)
         fig_choropleth.update_layout(
-            **PLOTLY_BASE,
+            **{**PLOTLY_BASE, "margin": dict(l=0, r=0, t=10, b=0)},
             height=340,
             geo=GEO_BASE,
-            margin=dict(l=0, r=0, t=10, b=0),
         )
         st.plotly_chart(fig_choropleth, use_container_width=True)
 
