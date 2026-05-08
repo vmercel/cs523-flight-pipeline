@@ -1,0 +1,32 @@
+# Run with: hbase shell < hbase/schema.hbase
+
+# Drop tables if they already exist (safe re-run)
+disable_all '.*'
+drop_all '.*'
+
+# flights_live — enriched latest state per aircraft
+# Row key: icao24 (24-bit hex string)
+create 'flights_live',
+  {NAME => 'info',   VERSIONS => 1, COMPRESSION => 'NONE'},
+  {NAME => 'pos',    VERSIONS => 1, COMPRESSION => 'NONE'},
+  {NAME => 'meta',   VERSIONS => 1, COMPRESSION => 'NONE'},
+  {NAME => 'enrich', VERSIONS => 1, COMPRESSION => 'NONE'}
+
+# flights_agg — sliding-window aggregations per country
+# Row key: <origin_country>|<reverse_epoch_window_end>
+# Reverse epoch puts newest windows first in scans
+create 'flights_agg',
+  {NAME => 'm', VERSIONS => 1, COMPRESSION => 'NONE'}
+
+# flights_alerts — rapid-descent anomaly events (append-only)
+# Row key: <icao24>|<reverse_epoch_ts>
+create 'flights_alerts',
+  {NAME => 'a', VERSIONS => 1, COMPRESSION => 'NONE'}
+
+# flights_enriched — full enriched records (bonus table)
+# Row key: icao24
+create 'flights_enriched',
+  {NAME => 'raw',    VERSIONS => 1, COMPRESSION => 'NONE'},
+  {NAME => 'enrich', VERSIONS => 1, COMPRESSION => 'NONE'}
+
+list
